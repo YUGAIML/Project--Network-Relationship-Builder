@@ -1,0 +1,345 @@
+/* ==========================================
+   NEURAL NEXUS - LOGIN PAGE
+========================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+
+    background:linear-gradient(135deg,#0F172A,#1E3A8A,#0F172A);
+    min-height:100vh;
+    color:#fff;
+
+}
+
+/* ================= NAVBAR ================= */
+
+header{
+
+    width:100%;
+    background:rgba(15,23,42,.90);
+    backdrop-filter:blur(15px);
+
+    position:fixed;
+    top:0;
+    left:0;
+
+    z-index:1000;
+
+}
+
+.navbar{
+
+    width:90%;
+    margin:auto;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:18px 0;
+
+}
+
+.logo{
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    color:#38BDF8;
+
+    font-size:28px;
+    font-weight:700;
+
+}
+
+.logo span{
+
+    color:white;
+
+}
+
+.navbar ul{
+
+    display:flex;
+    gap:25px;
+
+    list-style:none;
+
+}
+
+.navbar ul li a{
+
+    color:white;
+    text-decoration:none;
+    transition:.3s;
+
+}
+
+.navbar ul li a:hover{
+
+    color:#38BDF8;
+
+}
+
+/* ================= LOGIN SECTION ================= */
+
+.login-section{
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:120px 20px 40px;
+
+}
+
+/* ================= CARD ================= */
+
+.login-card{
+
+    width:460px;
+
+    background:rgba(255,255,255,.08);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.15);
+
+    border-radius:20px;
+
+    padding:40px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+
+}
+
+/* ================= HEADER ================= */
+
+.card-header{
+
+    text-align:center;
+    margin-bottom:30px;
+
+}
+
+.icon{
+
+    width:80px;
+    height:80px;
+
+    border-radius:50%;
+
+    background:#2563EB;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    margin:auto;
+    margin-bottom:20px;
+
+    box-shadow:0 0 25px rgba(37,99,235,.5);
+
+}
+
+.icon i{
+
+    font-size:34px;
+
+}
+
+.card-header h2{
+
+    font-size:32px;
+    margin-bottom:10px;
+
+}
+
+.card-header p{
+
+    color:#CBD5E1;
+    line-height:28px;
+
+}
+
+/* ================= FLASH ================= */
+
+.message{
+
+    background:#2563EB;
+
+    text-align:center;
+
+    padding:12px;
+
+    border-radius:8px;
+
+    margin-bottom:20px;
+
+}
+
+/* ================= FORM ================= */
+
+.input-box{
+
+    margin-bottom:22px;
+
+}
+
+.input-box label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-weight:500;
+
+}
+
+.input-box label i{
+
+    color:#38BDF8;
+    margin-right:8px;
+
+}
+
+.input-box input{
+
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+    outline:none;
+
+    border-radius:10px;
+
+    background:rgba(255,255,255,.12);
+
+    color:white;
+
+    font-size:15px;
+
+}
+
+.input-box input::placeholder{
+
+    color:#CBD5E1;
+
+}
+
+/* ================= BUTTON ================= */
+
+.login-btn{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#2563EB;
+
+    color:white;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.login-btn:hover{
+
+    background:#1D4ED8;
+
+    transform:translateY(-3px);
+
+}
+
+/* ================= BOTTOM ================= */
+
+.bottom-text{
+
+    margin-top:25px;
+
+    text-align:center;
+
+    color:#CBD5E1;
+
+}
+
+.bottom-text a{
+
+    color:#38BDF8;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+}
+
+.bottom-text a:hover{
+
+    text-decoration:underline;
+
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:600px){
+
+.login-card{
+
+    width:100%;
+
+    padding:30px 20px;
+
+}
+
+.navbar{
+
+    flex-direction:column;
+    gap:15px;
+
+}
+
+.navbar ul{
+
+    gap:15px;
+
+}
+
+.logo{
+
+    font-size:22px;
+
+}
+
+.logo span{
+
+    font-size:20px;
+
+}
+
+.card-header h2{
+
+    font-size:26px;
+
+}
+
+}

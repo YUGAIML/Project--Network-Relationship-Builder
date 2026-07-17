@@ -1,0 +1,373 @@
+/* ==========================================
+   NEURAL NEXUS - REGISTER PAGE
+========================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+
+    background:linear-gradient(135deg,#0F172A,#1E3A8A,#0F172A);
+
+    min-height:100vh;
+
+    color:#fff;
+
+}
+
+/* ================= NAVBAR ================= */
+
+header{
+
+    width:100%;
+    background:rgba(15,23,42,.90);
+
+    backdrop-filter:blur(15px);
+
+    position:fixed;
+
+    top:0;
+
+    z-index:1000;
+
+}
+
+.navbar{
+
+    width:90%;
+
+    margin:auto;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:18px 0;
+
+}
+
+.logo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    font-size:28px;
+
+    color:#38BDF8;
+
+    font-weight:700;
+
+}
+
+.logo span{
+
+    color:white;
+
+}
+
+.navbar ul{
+
+    display:flex;
+
+    gap:25px;
+
+    list-style:none;
+
+}
+
+.navbar ul li a{
+
+    color:white;
+
+    text-decoration:none;
+
+    transition:.3s;
+
+    font-weight:500;
+
+}
+
+.navbar ul li a:hover{
+
+    color:#38BDF8;
+
+}
+
+/* ================= REGISTER SECTION ================= */
+
+.register-section{
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:120px 20px 40px;
+
+}
+
+/* ================= CARD ================= */
+
+.register-card{
+
+    width:480px;
+
+    background:rgba(255,255,255,.08);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.15);
+
+    border-radius:20px;
+
+    padding:40px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+
+}
+
+/* ================= HEADER ================= */
+
+.card-header{
+
+    text-align:center;
+
+    margin-bottom:30px;
+
+}
+
+.icon{
+
+    width:80px;
+
+    height:80px;
+
+    background:#2563EB;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin:auto;
+
+    margin-bottom:20px;
+
+    box-shadow:0 0 25px rgba(37,99,235,.6);
+
+}
+
+.icon i{
+
+    font-size:34px;
+
+}
+
+.card-header h2{
+
+    font-size:32px;
+
+    margin-bottom:10px;
+
+}
+
+.card-header p{
+
+    color:#CBD5E1;
+
+    line-height:28px;
+
+}
+
+/* ================= FLASH MESSAGE ================= */
+
+.message{
+
+    background:#2563EB;
+
+    padding:12px;
+
+    border-radius:8px;
+
+    text-align:center;
+
+    margin-bottom:20px;
+
+    font-weight:500;
+
+}
+
+/* ================= FORM ================= */
+
+.input-box{
+
+    margin-bottom:22px;
+
+}
+
+.input-box label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-weight:500;
+
+}
+
+.input-box label i{
+
+    color:#38BDF8;
+
+    margin-right:8px;
+
+}
+
+.input-box input{
+
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:10px;
+
+    background:rgba(255,255,255,.12);
+
+    color:white;
+
+    font-size:15px;
+
+}
+
+.input-box input::placeholder{
+
+    color:#CBD5E1;
+
+}
+
+/* ================= BUTTON ================= */
+
+.register-btn{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#2563EB;
+
+    color:white;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.register-btn:hover{
+
+    background:#1D4ED8;
+
+    transform:translateY(-3px);
+
+}
+
+/* ================= LOGIN LINK ================= */
+
+.bottom-text{
+
+    text-align:center;
+
+    margin-top:25px;
+
+    color:#CBD5E1;
+
+}
+
+.bottom-text a{
+
+    color:#38BDF8;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+}
+
+.bottom-text a:hover{
+
+    text-decoration:underline;
+
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:600px){
+
+.register-card{
+
+    width:100%;
+
+    padding:30px 20px;
+
+}
+
+.logo{
+
+    font-size:22px;
+
+}
+
+.logo span{
+
+    font-size:20px;
+
+}
+
+.navbar{
+
+    flex-direction:column;
+
+    gap:15px;
+
+}
+
+.navbar ul{
+
+    gap:15px;
+
+}
+
+.card-header h2{
+
+    font-size:26px;
+
+}
+
+}
