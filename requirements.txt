@@ -1,5 +1,7 @@
 # Web Framework & Core Extensions
-gunicorn 
+Flask
+gunicorn
+mysql-connector-python
 Flask>=3.0.0
 Flask-SQLAlchemy>=3.1.1
 Flask-MySQLdb>=2.0.0
