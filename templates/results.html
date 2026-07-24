@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Matches - Network Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/result.css') }}">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .light-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .light-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+            transform: translateY(-2px);
+        }
+
+        .ambient-bg {
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.05) 0px, transparent 50%);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white relative ambient-bg overflow-x-hidden antialiased">
+
+    <!-- NAVBAR -->
+    <nav class="border-b border-slate-200 bg-white/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                
+                <!-- Logo & Title (Left) -->
+                <div class="flex items-center gap-3">
+                    <div class="bg-indigo-600 p-2.5 rounded-xl text-white shadow-md shadow-indigo-200">
+                        <i data-lucide="git-branch" class="w-5 h-5"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-slate-900">Network Builder</span>
+                </div>
+
+                <!-- Navigation & Action Buttons (Right) -->
+                <div class="flex items-center gap-4">
+                    <a href="{{ url_for('analytics') }}" class="flex items-center gap-2 text-slate-600 hover:text-indigo-600 text-sm font-semibold transition-colors px-3 py-2 rounded-lg hover:bg-slate-100">
+                        <i data-lucide="bar-chart-2" class="w-4 h-4 text-indigo-500"></i>
+                        <span>Analytics</span>
+                    </a>
+
+                    <!-- EXPORT BUTTON -->
+                    <a href="{{ url_for('export_report') }}" 
+                       class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-md shadow-indigo-100 hover:shadow-lg hover:shadow-indigo-200 transition-all">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        <span>Export Overall Report</span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+    <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-24 flex-grow w-full">
+
+        <!-- HEADER SECTION -->
+        <div class="flex items-center justify-between mb-10 flex-wrap gap-4">
+            <div>
+                <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                    Your <span class="text-gradient">Recommended</span> Developer Suite
+                </h1>
+                <p class="text-slate-500 text-sm mt-1.5 font-medium">
+                    AI-powered matchmaking, skill gap identification, and personalized growth path.
+                </p>
+            </div>
+            <a href="{{ url_for('developers') }}" class="flex items-center gap-2 text-xs font-semibold text-slate-700 hover:text-indigo-600 bg-white border border-slate-200 hover:border-indigo-300 px-4 py-2.5 rounded-xl shadow-sm hover:shadow transition-all">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-indigo-500"></i> Refine Search
+            </a>
+        </div>
+
+        {% if developers %}
+
+        <!-- DASHBOARD OVERVIEW CARDS GRID -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+
+            <!-- 1. ANALYTICS -->
+            <div class="light-card p-6 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 bg-indigo-50 rounded-xl text-indigo-600 border border-indigo-100">
+                            <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                        </div>
+                        <span class="text-[11px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200/60 px-2.5 py-1 rounded-full">
+                            Active Session
+                        </span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">Analytics</h3>
+                    <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">Overview of matching percentages, technology distribution, and profile metrics.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-xs font-medium text-slate-400">{{ developers|length }} Developers Scanned</span>
+                    <a href="{{ url_for('analytics') }}" class="text-xs text-indigo-600 hover:text-indigo-700 font-bold flex items-center gap-1 group">
+                        View Analytics <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 2. YOUTUBE RECOMMENDATIONS -->
+            <div class="light-card p-6 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 bg-rose-50 rounded-xl text-rose-600 border border-rose-100">
+                            <i data-lucide="youtube" class="w-5 h-5"></i>
+                        </div>
+                        <span class="text-[11px] font-bold text-rose-700 bg-rose-50 border border-rose-200/60 px-2.5 py-1 rounded-full">
+                            Curated Videos
+                        </span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">YouTube Recommendations</h3>
+                    <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">Handpicked video courses and tutorials tailored to enhance your current technical skills.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+    <span class="text-xs font-medium text-slate-400">Recommended Channels</span>
+    <a href="{{ url_for('youtube') }}" class="text-xs text-indigo-600 hover:text-indigo-700 font-bold flex items-center gap-1 group">
+        Explore Resources <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+    </a>
+</div>
+            </div>
+
+            <!-- 3. GITHUB REPOSITORIES -->
+            <div class="light-card p-6 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 bg-purple-50 rounded-xl text-purple-600 border border-purple-100">
+                            <i data-lucide="folder-git-2" class="w-5 h-5"></i>
+                        </div>
+                        <span class="text-[11px] font-bold text-purple-700 bg-purple-50 border border-purple-200/60 px-2.5 py-1 rounded-full">
+                            {{ repositories|length if repositories else 0 }} Top Repos
+                        </span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">GitHub Repositories</h3>
+                    <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">Trending repositories and open-source projects aligning with your query tech stack.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-xs font-medium text-slate-400">Open Source</span>
+                    <a href="#repositories-section" class="text-xs text-indigo-600 hover:text-indigo-700 font-bold flex items-center gap-1 group">
+                        Browse Repos <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 4. GITHUB DEVELOPERS -->
+            <div class="light-card p-6 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 bg-emerald-50 rounded-xl text-emerald-600 border border-emerald-100">
+                            <i data-lucide="users" class="w-5 h-5"></i>
+                        </div>
+                        <span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2.5 py-1 rounded-full">
+                            {{ developers|length }} Matches
+                        </span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">GitHub Developers</h3>
+                    <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">Top candidates and potential collaborators ordered by semantic match percentage.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-xs font-medium text-slate-400">Ranked Matches</span>
+                    <a href="#developers-section" class="text-xs text-indigo-600 hover:text-indigo-700 font-bold flex items-center gap-1 group">
+                        View Profiles <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 5. SKILL GAP -->
+            <div class="light-card p-6 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 bg-amber-50 rounded-xl text-amber-600 border border-amber-100">
+                            <i data-lucide="target" class="w-5 h-5"></i>
+                        </div>
+                        <span class="text-[11px] font-bold text-amber-700 bg-amber-50 border border-amber-200/60 px-2.5 py-1 rounded-full">
+                            {{ missing_skills|length if missing_skills else 0 }} Identified
+                        </span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">Skill Gap</h3>
+                    <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">Key skills present in target profiles that you can acquire to improve match quality.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-xs font-medium text-slate-400">Insights</span>
+                    <a href="#skill-gap-section" class="text-xs text-indigo-600 hover:text-indigo-700 font-bold flex items-center gap-1 group">
+                        Analyze Gaps <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 6. ROADMAP -->
+            <div class="light-card p-6 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 bg-sky-50 rounded-xl text-sky-600 border border-sky-100">
+                            <i data-lucide="map" class="w-5 h-5"></i>
+                        </div>
+                        <span class="text-[11px] font-bold text-sky-700 bg-sky-50 border border-sky-200/60 px-2.5 py-1 rounded-full">
+                            Step-by-Step
+                        </span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">Roadmap</h3>
+                    <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">A structured learning pathway designed to bridge gaps and upgrade your technology stack.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-xs font-medium text-slate-400">Learning Path</span>
+                    <a href="#roadmap-section" class="text-xs text-indigo-600 hover:text-indigo-700 font-bold flex items-center gap-1 group">
+                        View Pathway <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ==============================================
+             SECTION 1: GITHUB DEVELOPERS
+        ================================================== -->
+        <div id="developers-section" class="pt-6">
+            <div class="light-card p-4 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="sliders-horizontal" class="w-4 h-4 text-indigo-600"></i>
+                    <span class="text-sm font-bold text-slate-800">Filter Recommendations</span>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5">
+                        <span class="text-[11px] font-medium text-slate-500">Sort By:</span>
+                        <select id="sort-select" class="bg-transparent text-xs font-semibold text-slate-700 focus:outline-none cursor-pointer">
+                            <option value="similarity">Highest Match</option>
+                            <option value="followers">Most Followers</option>
+                            <option value="repos">Most Repositories</option>
+                        </select>
+                    </div>
+                    <input type="text" id="location-filter" placeholder="Filter by location..."
+                           class="bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500 w-44 font-medium">
+                </div>
+            </div>
+
+            <!-- DEVELOPERS GRID CONTAINER -->
+            <div id="results-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for developer in developers %}
+                <div class="developer-card light-card p-5 rounded-2xl flex flex-col justify-between h-full relative overflow-hidden group"
+                     data-score="{{ developer.similarity or 0 }}" 
+                     data-experience="{{ developer.experience or 'Intermediate' }}"
+                     data-keywords="{{ (developer.name or developer.username)|lower }} {{ (developer.location or '')|lower }}">
+                    
+                    <div>
+                        <!-- Header: Avatar, Name & Match Badge -->
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="flex items-center gap-3">
+                                <img src="{{ developer.avatar }}" alt="{{ developer.username }}" class="w-12 h-12 rounded-full object-cover ring-2 ring-indigo-500/20 shadow-sm">
+                                <div>
+                                    <h4 class="font-bold text-slate-900 group-hover:text-indigo-600 transition-colors leading-tight text-base">
+                                        {{ developer.name or developer.username }}
+                                    </h4>
+                                    <p class="text-xs text-slate-400 font-medium">@{{ developer.username }}</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Match Badge -->
+                            <span class="shrink-0 text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full font-bold">
+                                {{ developer.similarity }}% Match
+                            </span>
+                        </div>
+
+                        <!-- Match Progress Bar -->
+                        <div class="w-full bg-slate-100 rounded-full h-2 mb-3 overflow-hidden">
+                            <div class="bg-gradient-to-r from-indigo-500 to-emerald-500 h-2 rounded-full" style="width: {{ developer.similarity }}%;"></div>
+                        </div>
+
+                        {% if developer.bio %}
+                        <p class="text-xs text-slate-600 line-clamp-2 mb-4 leading-relaxed font-normal">{{ developer.bio }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Action / Profile Link -->
+                    <div class="pt-3 border-t border-slate-100 flex items-center justify-between mt-auto">
+                        <a href="https://github.com/{{ developer.username }}" target="_blank" class="text-xs text-indigo-600 hover:text-indigo-800 font-bold flex items-center gap-1">
+                            View GitHub <i data-lucide="external-link" class="w-3 h-3"></i>
+                        </a>
+                        <button onclick="bookmarkCandidate('{{ developer.username }}', 'https://github.com/{{ developer.username }}', this)" class="text-xs font-semibold text-slate-500 hover:text-amber-600 transition-colors flex items-center gap-1">
+                            <i data-lucide="bookmark" class="w-3.5 h-3.5"></i> Bookmark
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <p id="no-results-msg" class="hidden text-center text-slate-500 font-medium py-12">
+                No developers match that location filter.
+            </p>
+
+            <div class="flex justify-center mt-8">
+                <button id="load-more-btn" class="bg-white border border-slate-200 hover:border-indigo-300 hover:bg-slate-50 text-slate-700 shadow-sm px-6 py-2.5 rounded-xl text-sm font-semibold transition-all flex items-center gap-2">
+                    Show More <i data-lucide="chevron-down" class="w-4 h-4 text-indigo-500"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ==============================================
+             SECTION 2: GITHUB REPOSITORIES
+        ================================================== -->
+        <div id="repositories-section" class="light-card rounded-2xl p-6 sm:p-8 mt-12">
+            <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2.5">
+                <div class="p-2 bg-amber-50 text-amber-500 rounded-lg border border-amber-100">
+                    <i data-lucide="star" class="w-5 h-5"></i>
+                </div> 
+                Recommended GitHub Repositories
+            </h2>
+
+            {% if repositories %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for repo in repositories %}
+                <div class="repo-card bg-slate-50/70 border border-slate-200 p-5 rounded-xl flex flex-col justify-between hover:bg-white hover:border-indigo-300 hover:shadow-md transition-all">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-base mb-2 hover:text-indigo-600 transition-colors">{{ repo.name }}</h3>
+                        <p class="text-xs text-slate-600 line-clamp-3 mb-4 leading-relaxed">{{ repo.description or 'No description available.' }}</p>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-3 text-xs text-slate-500 mb-4 border-t border-slate-200/60 pt-3 font-medium">
+                            <span class="flex items-center gap-1 text-indigo-600 font-semibold"><i data-lucide="code" class="w-3.5 h-3.5"></i> {{ repo.language or "Not Specified" }}</span>
+                            <span class="flex items-center gap-1"><i data-lucide="star" class="w-3.5 h-3.5 text-amber-500"></i> {{ repo.stars }}</span>
+                            <span class="flex items-center gap-1"><i data-lucide="git-fork" class="w-3.5 h-3.5"></i> {{ repo.forks }}</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] text-slate-400 font-medium">Owner: {{ repo.owner }}</span>
+                            <a href="{{ repo.url }}" target="_blank" class="bg-indigo-50 border border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white text-xs px-3 py-1.5 rounded-lg font-bold transition-all">
+                                Open Repo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-slate-500 text-sm font-medium">No repositories found.</p>
+            {% endif %}
+        </div>
+
+        <!-- ==============================================
+             SECTION 3: SKILL GAP ANALYSIS
+        ================================================== -->
+        <div id="skill-gap-section" class="light-card rounded-2xl p-6 sm:p-8 mt-10">
+            <h2 class="text-2xl font-bold text-slate-900 mb-1 flex items-center gap-2.5">
+                <div class="p-2 bg-indigo-50 text-indigo-600 rounded-lg border border-indigo-100">
+                    <i data-lucide="target" class="w-5 h-5"></i>
+                </div> 
+                Skill Gap Analysis
+            </h2>
+            <p class="text-slate-500 text-sm mb-6 font-medium">
+                These are the most common skills found among recommended developers that aren't in your current stack.
+            </p>
+
+            {% if missing_skills %}
+            <div class="flex flex-wrap gap-3">
+                {% for skill in missing_skills %}
+                <div class="skill-gap-card bg-slate-50 border border-slate-200 px-4 py-2.5 rounded-xl flex items-center gap-3">
+                    <span class="font-bold text-sm text-slate-800">{{ skill.skill }}</span>
+                    <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-md border border-indigo-200">Found in {{ skill.count }} Developers</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-sm font-bold inline-block">
+                🎉 Great job! No major skill gaps were identified.
+            </p>
+            {% endif %}
+        </div>
+
+        <!-- ==============================================
+             SECTION 4: LEARNING ROADMAP
+        ================================================== -->
+        <div id="roadmap-section" class="light-card rounded-2xl p-6 sm:p-8 mt-10">
+            <h2 class="text-2xl font-bold text-slate-900 mb-1 flex items-center gap-2.5">
+                <div class="p-2 bg-sky-50 text-sky-600 rounded-lg border border-sky-100">
+                    <i data-lucide="map" class="w-5 h-5"></i>
+                </div> 
+                Personalized Learning Roadmap
+            </h2>
+            <p class="text-slate-500 text-sm mb-6 font-medium">Follow this structured milestone roadmap to bridge gaps and upgrade your technology stack.</p>
+
+            {% if roadmap %}
+            <div class="roadmap-container space-y-3">
+                {% for topic in roadmap %}
+                <div class="roadmap-item bg-slate-50 border border-slate-200 p-4 rounded-xl flex items-center gap-3.5 hover:bg-white transition-colors">
+                    <div class="w-7 h-7 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-700 flex items-center justify-center text-xs font-bold shrink-0 shadow-sm">
+                        ✓
+                    </div>
+                    <div class="roadmap-content text-sm font-semibold text-slate-800">{{ topic }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-slate-500 text-sm font-medium">No roadmap available for the selected skills.</p>
+            {% endif %}
+        </div>
+
+        <!-- ==============================================
+             SECTION 5: CAREER RECOMMENDATIONS
+        ================================================== -->
+        <div class="light-card rounded-2xl p-6 sm:p-8 mt-10">
+            <h2 class="text-2xl font-bold text-slate-900 mb-1 flex items-center gap-2.5">
+                <div class="p-2 bg-purple-50 text-purple-600 rounded-lg border border-purple-100">
+                    <i data-lucide="compass" class="w-5 h-5"></i>
+                </div> 
+                AI Career Recommendations
+            </h2>
+            <p class="text-slate-500 text-sm mb-6 font-medium">Based on your current skills, these career paths best match your profile.</p>
+
+            {% if careers %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {% for career in careers %}
+                <div class="career-card bg-slate-50 border border-slate-200 p-6 rounded-2xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-slate-900">{{ career.career }}</h3>
+                        <span class="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
+                            {{ career.score }}% Match
+                        </span>
+                    </div>
+
+                    <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">✅ Matched Skills</h4>
+                    <div class="flex flex-wrap gap-1.5 mb-5">
+                        {% for skill in career.matched %}
+                        <span class="text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-md">{{ skill }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">📈 Skills to Learn</h4>
+                    <div class="flex flex-wrap gap-1.5">
+                        {% for skill in career.missing %}
+                        <span class="text-[11px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 px-2.5 py-1 rounded-md">{{ skill }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-slate-500 text-sm font-medium">No career recommendations available.</p>
+            {% endif %}
+        </div>
+
+        {% else %}
+        <div class="light-card rounded-2xl py-16 px-6 text-center max-w-lg mx-auto">
+            <div class="p-4 bg-slate-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 text-slate-400">
+                <i data-lucide="search-x" class="w-8 h-8"></i>
+            </div>
+            <h3 class="text-slate-900 font-bold text-lg mb-2">No matches found</h3>
+            <p class="text-slate-500 text-sm mb-6 font-medium">Try selecting different or fewer skills.</p>
+            <a href="{{ url_for('developers') }}" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-md shadow-indigo-100">
+                Try Again
+            </a>
+        </div>
+        {% endif %}
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-200 bg-white py-8 text-center text-xs font-semibold text-slate-500 relative z-10">
+        <p>&copy; 2026 Network Builder AI. All rights reserved.</p>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT -->
+    <script>
+        lucide.createIcons();
+
+        const INITIAL_VISIBLE = 6;
+        const LOAD_MORE_STEP = 6;
+
+        const sortSelect = document.getElementById('sort-select');
+        const locationFilter = document.getElementById('location-filter');
+        const resultsGrid = document.getElementById('results-grid');
+        const noResultsMsg = document.getElementById('no-results-msg');
+        const loadMoreBtn = document.getElementById('load-more-btn');
+
+        let visibleLimit = INITIAL_VISIBLE;
+
+        function render() {
+            if (!resultsGrid) return;
+
+            const cards = Array.from(resultsGrid.querySelectorAll('.developer-card'));
+            const query = locationFilter ? locationFilter.value.trim().toLowerCase() : '';
+
+            const matching = cards.filter(card =>
+                !query || (card.dataset.keywords && card.dataset.keywords.includes(query))
+            );
+            const nonMatching = cards.filter(card => !matching.includes(card));
+
+            nonMatching.forEach(card => card.classList.add('hidden'));
+
+            matching.forEach((card, i) => {
+                card.classList.toggle('hidden', i >= visibleLimit);
+            });
+
+            if (noResultsMsg) noResultsMsg.classList.toggle('hidden', matching.length !== 0);
+            if (loadMoreBtn) loadMoreBtn.classList.toggle('hidden', matching.length <= visibleLimit);
+        }
+
+        function applySort() {
+            if (!resultsGrid || !sortSelect) return;
+
+            const key = sortSelect.value;
+            const cards = Array.from(resultsGrid.querySelectorAll('.developer-card'));
+
+            cards.sort((a, b) => (parseFloat(b.dataset[key]) || 0) - (parseFloat(a.dataset[key]) || 0));
+            cards.forEach(card => resultsGrid.appendChild(card));
+
+            visibleLimit = INITIAL_VISIBLE;
+            render();
+        }
+
+        if (sortSelect) sortSelect.addEventListener('change', applySort);
+        if (locationFilter) {
+            locationFilter.addEventListener('input', () => {
+                visibleLimit = INITIAL_VISIBLE;
+                render();
+            });
+        }
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', () => {
+                visibleLimit += LOAD_MORE_STEP;
+                render();
+            });
+        }
+
+        render();
+    </script>
+
+    <script>
+    function filterDevelopers() {
+        const minScore = parseInt(document.getElementById('filter-score')?.value) || 0;
+        const selectedExp = document.getElementById('filter-experience')?.value || 'ALL';
+        const searchQuery = document.getElementById('filter-search')?.value.toLowerCase().trim() || '';
+
+        const cards = document.querySelectorAll('.developer-card');
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const cardScore = parseInt(card.getAttribute('data-score')) || 0;
+            const cardExp = card.getAttribute('data-experience');
+            const cardKeywords = card.getAttribute('data-keywords') || '';
+
+            const matchesScore = cardScore >= minScore;
+            const matchesExp = (selectedExp === 'ALL') || (cardExp === selectedExp);
+            const matchesSearch = !searchQuery || cardKeywords.includes(searchQuery);
+
+            if (matchesScore && matchesExp && matchesSearch) {
+                card.style.display = 'flex';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        const noResults = document.getElementById('no-results');
+        if (noResults) {
+            if (visibleCount === 0 && cards.length > 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+        }
+    }
+
+    // Interactive Candidate Bookmarking Handler
+    function bookmarkCandidate(name, githubUrl, btnElement) {
+        fetch('/bookmark', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: name, github_url: githubUrl })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success') {
+                btnElement.classList.remove('text-slate-500');
+                btnElement.classList.add('text-amber-600', 'font-bold');
+                btnElement.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5 text-amber-600"></i> Saved`;
+                lucide.createIcons();
+            } else {
+                alert(data.message || 'Please log in to bookmark candidates.');
+            }
+        })
+        .catch(err => alert('Please log in to save candidate profiles.'));
+    }
+</script>
+</body>
+</html>

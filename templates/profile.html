@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/profile.css') }}">
+    <title>{{ developer.name }}</title>
+
+</head>
+
+<body>
+
+<h1>{{ developer.name }}</h1>
+
+<img src="{{ developer.avatar }}" width="150">
+
+<p><b>Username:</b> {{ developer.username }}</p>
+
+<p><b>Language:</b> {{ developer.language }}</p>
+
+<p><b>Followers:</b> {{ developer.followers }}</p>
+
+<p><b>Repositories:</b> {{ developer.public_repos }}</p>
+
+<p><b>Skills:</b> {{ developer.skills }}</p>
+
+<p><b>Expertise:</b> {{ developer.expertise }}</p>
+
+<h2>AI Insights</h2>
+
+<ul>
+
+{% for item in developer.insights %}
+
+<li>{{ item }}</li>
+
+{% endfor %}
+
+</ul>
+
+<a href="{{ developer.github_url }}" target="_blank">
+
+Visit GitHub
+
+</a>
+
+<br><br>
+
+<a href="{{ url_for('developers') }}">
+
+Back
+
+</a>
+
+</body>
+
+</html>

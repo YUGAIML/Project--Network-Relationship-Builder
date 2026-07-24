@@ -1,0 +1,267 @@
+/* ==========================================================
+   NEURAL NEXUS - REGISTER PAGE (LIGHT MODERN THEME)
+   Colors: Soft Gray (#F8FAFC), Vibrant Blue (#2563EB), Slate (#334155)
+========================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #F8FAFC;
+    min-height: 100vh;
+    color: #334155;
+    overflow-x: hidden;
+}
+
+/* ================= NAVBAR ================= */
+
+header {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #2563EB;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.logo span {
+    color: #0F172A;
+    font-size: 24px;
+    letter-spacing: -0.5px;
+}
+
+.navbar ul {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    list-style: none;
+}
+
+.navbar ul li a {
+    color: #475569;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all .3s ease;
+}
+
+.navbar ul li a:hover {
+    color: #2563EB;
+}
+
+/* ================= REGISTER SECTION ================= */
+
+.register-section {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 120px 20px 60px;
+    background: radial-gradient(circle at top center, rgba(37, 99, 235, 0.05) 0%, transparent 70%);
+}
+
+/* ================= CARD ================= */
+
+.register-card {
+    width: 100%;
+    max-width: 480px;
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+    transition: all .3s ease;
+}
+
+.register-card:hover {
+    box-shadow: 0 20px 40px rgba(37, 99, 235, 0.08);
+}
+
+/* ================= HEADER ================= */
+
+.card-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #EFF6FF;
+    border: 1px solid #DBEAFE;
+    color: #2563EB;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 18px;
+}
+
+.icon i {
+    font-size: 28px;
+}
+
+.card-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0F172A;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.card-header p {
+    color: #64748B;
+    line-height: 24px;
+    font-size: 15px;
+}
+
+/* ================= FLASH MESSAGE ================= */
+
+.message {
+    background: #EFF6FF;
+    border: 1px solid #BFDBFE;
+    color: #1D4ED8;
+    text-align: center;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 22px;
+}
+
+/* ================= FORM ================= */
+
+.input-box {
+    margin-bottom: 20px;
+}
+
+.input-box label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #334155;
+}
+
+.input-box label i {
+    color: #2563EB;
+    margin-right: 6px;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1.5px solid #E2E8F0;
+    outline: none;
+    border-radius: 10px;
+    background: #F8FAFC;
+    color: #0F172A;
+    font-size: 15px;
+    transition: all .3s ease;
+}
+
+.input-box input::placeholder {
+    color: #94A3B8;
+}
+
+.input-box input:focus {
+    background: #FFFFFF;
+    border-color: #2563EB;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+/* ================= BUTTON ================= */
+
+.register-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: #2563EB;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .3s ease;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+    margin-top: 6px;
+}
+
+.register-btn:hover {
+    background: #1D4ED8;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+}
+
+/* ================= BOTTOM ================= */
+
+.bottom-text {
+    margin-top: 24px;
+    text-align: center;
+    color: #64748B;
+    font-size: 15px;
+}
+
+.bottom-text a {
+    color: #2563EB;
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 4px;
+    transition: all .2s ease;
+}
+
+.bottom-text a:hover {
+    color: #1D4ED8;
+    text-decoration: underline;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width: 600px) {
+    .register-card {
+        padding: 30px 20px;
+    }
+
+    .navbar {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .logo span {
+        font-size: 20px;
+    }
+
+    .card-header h2 {
+        font-size: 24px;
+    }
+}

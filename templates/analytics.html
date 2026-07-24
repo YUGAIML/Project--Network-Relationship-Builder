@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - Network Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .text-gradient {
+            background: linear-gradient(135deg, #a78bfa 0%, #ec4899 50%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glow-card {
+            background: rgba(13, 17, 28, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(16px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        /* Vibrant Glow Styling for the Donut Card */
+        .colorful-donut-card {
+            background: linear-gradient(145deg, rgba(20, 15, 38, 0.85), rgba(10, 15, 30, 0.85));
+            border: 1px solid rgba(167, 139, 250, 0.25);
+            box-shadow: 0 0 35px -5px rgba(124, 58, 237, 0.15), 0 0 15px -5px rgba(236, 72, 153, 0.1);
+        }
+        .colorful-donut-card:hover {
+            border-color: rgba(167, 139, 250, 0.4);
+            box-shadow: 0 0 45px -5px rgba(124, 58, 237, 0.25), 0 0 20px -5px rgba(236, 72, 153, 0.2);
+        }
+    </style>
+</head>
+<body class="text-gray-200 min-h-screen flex flex-col justify-between relative bg-[#05070f] font-sans">
+
+    <!-- Ambient Glow Backgrounds -->
+    <div class="absolute top-0 left-1/3 w-[500px] h-[500px] bg-violet-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+    <!-- NAVBAR -->
+    <nav class="border-b border-gray-900/80 bg-[#05070f]/80 backdrop-blur-xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <div class="bg-violet-600 p-2 rounded-xl text-white shadow-[0_0_20px_rgba(124,58,237,0.5)]">
+                        <i data-lucide="git-branch" class="w-5 h-5"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-white">Network Builder</span>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <a href="{{ url_for('recommend') }}" class="text-gray-400 hover:text-white text-sm font-medium">Back to Results</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-24 flex-grow">
+
+        <div class="mb-8">
+            <h1 class="text-3xl font-extrabold text-white">
+                Skill & Market <span class="text-gradient">Analytics</span>
+            </h1>
+            <p class="text-gray-400 text-sm mt-1">Breakdown of top languages and technology distribution across matched profiles.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+            <!-- VIBRANT COLORFUL DOUGHNUT CHART CARD -->
+            <div class="glow-card colorful-donut-card p-6 rounded-2xl flex flex-col justify-between relative overflow-hidden">
+                <!-- Background ambient glow spot for the card -->
+                <div class="absolute -top-10 -right-10 w-40 h-40 bg-pink-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-violet-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-4 relative z-10">
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                            <div class="p-1.5 rounded-lg bg-gradient-to-tr from-violet-500 to-pink-500 text-white shadow-md">
+                                <i data-lucide="pie-chart" class="w-4 h-4"></i>
+                            </div>
+                            Skill Distribution
+                        </h3>
+                        <span class="text-[10px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-300 via-pink-300 to-emerald-300 bg-violet-950/80 border border-violet-500/30 px-3 py-1 rounded-full shadow-inner">
+                            Top Technologies
+                        </span>
+                    </div>
+
+                    <!-- Chart Wrapper with Centered Metric -->
+                    <div class="relative w-56 h-56 mx-auto my-2 flex items-center justify-center">
+                        <canvas id="skillsChart"></canvas>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
+                            <span id="chart-total-count" class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-violet-200 to-pink-300">0</span>
+                            <span class="text-[10px] text-violet-300/80 uppercase tracking-wider font-bold mt-0.5">Total Skills</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Colorful HTML Grid Legend -->
+                <div id="custom-legend" class="grid grid-cols-2 gap-2 mt-4 text-xs pt-4 border-t border-violet-500/20 relative z-10">
+                    <!-- Dynamic colorful legend items injected here -->
+                </div>
+            </div>
+
+            <!-- MATCH INSIGHTS CARD -->
+            <div class="glow-card p-6 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <i data-lucide="bar-chart-2" class="w-5 h-5 text-emerald-400"></i> Match Insights
+                    </h3>
+                    <p class="text-xs text-gray-400 mb-6">Real-time statistics calculated from current query results.</p>
+                    <div class="space-y-3">
+                        <!-- MISSING SKILLS TRACKED -->
+                        <div class="bg-gray-950/60 p-4 rounded-xl border border-gray-900 flex items-center justify-between">
+                            <span class="text-xs text-gray-400">Top Skills Tracked</span>
+                            <span class="text-lg font-bold text-violet-400">
+                                {{ dashboard.top_skills|length if dashboard and dashboard.top_skills else 0 }}
+                            </span>
+                        </div>
+
+                        <!-- AVERAGE COMPATIBILITY -->
+                        <div class="bg-gray-950/60 p-4 rounded-xl border border-gray-900 flex items-center justify-between">
+                            <span class="text-xs text-gray-400">Average Compatibility</span>
+                            <span class="text-lg font-bold text-emerald-400">
+                                {% if dashboard and dashboard.avg_compatibility %}
+                                    {{ dashboard.avg_compatibility }}%
+                                {% else %}
+                                    High Match
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-gray-900">
+                    <a href="{{ url_for('developers') }}" class="text-xs text-violet-400 hover:text-violet-300 font-semibold flex items-center justify-between group">
+                        Back to Developer Recommendations <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="border-t border-gray-900 bg-[#05070f] py-8 text-center text-xs text-gray-600">
+        <p>&copy; 2026 Network Builder AI. All rights reserved.</p>
+    </footer>
+
+    <!-- FLOATING TOGGLE BUTTON -->
+    <button id="chat-toggle-btn" 
+            onclick="toggleChat()" 
+            class="fixed bottom-6 right-6 z-40 flex items-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-medium px-4 py-3 rounded-full shadow-lg hover:shadow-violet-500/30 hover:scale-105 transition-all duration-200">
+        <i data-lucide="bot" class="w-5 h-5"></i>
+        <span class="text-sm font-semibold tracking-wide">AI Chat</span>
+    </button>
+
+    <!-- CHATBOX WINDOW -->
+    <div id="chat-box" class="hidden fixed bottom-6 right-6 z-50 w-80 sm:w-96 glow-card rounded-2xl shadow-2xl border border-gray-800 flex flex-col overflow-hidden transition-all duration-300">
+        
+        <!-- Header -->
+        <div class="bg-gray-950/90 p-4 border-b border-gray-800 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="font-bold text-sm text-white flex items-center gap-1.5">
+                    🤖 AI Chatbot
+                </span>
+                <span class="text-[10px] text-violet-400 bg-violet-500/10 px-2 py-0.5 rounded-full border border-violet-500/20 font-semibold tracking-wide">
+                    Powered by Gemini
+                </span>
+            </div>
+            <button onclick="toggleChat()" class="text-gray-400 hover:text-white transition-colors">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+
+        <!-- Messages Container -->
+        <div id="chat-messages" class="p-4 h-72 overflow-y-auto space-y-3 text-xs">
+            <div class="flex items-start gap-2">
+                <div class="bg-violet-600/20 p-1.5 rounded-lg border border-violet-500/30 text-violet-300 shrink-0">
+                    <i data-lucide="bot" class="w-3.5 h-3.5"></i>
+                </div>
+                <div class="bg-gray-900/90 text-gray-200 p-3 rounded-2xl rounded-tl-none border border-gray-800 max-w-[80%] leading-relaxed">
+                    Hi! Ask me anything about developer matches, skill statistics, or missing technologies.
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <form id="chat-form" onsubmit="sendMessage(event)" class="p-3 bg-gray-950/90 border-t border-gray-800 flex gap-2">
+            <input type="text" id="chat-input" placeholder="Type your query..." class="w-full bg-gray-900 border border-gray-800 text-xs text-white rounded-xl px-3 py-2.5 focus:outline-none focus:border-violet-500 transition-colors placeholder-gray-500" required>
+            <button type="submit" class="bg-violet-600 hover:bg-violet-500 text-white px-3.5 py-2.5 rounded-xl transition-all flex items-center justify-center shrink-0">
+                <i data-lucide="send" class="w-3.5 h-3.5"></i>
+            </button>
+        </form>
+
+    </div>
+
+    <!-- SCRIPTS -->
+    <script>
+        lucide.createIcons();
+
+        // Data supplied from backend dashboard dict
+        const labels = [
+            {% if dashboard and dashboard.top_languages %}
+                {% for item in dashboard.top_languages %}"{{ item[0] }}",{% endfor %}
+            {% else %}
+                "Python", "JavaScript", "Java", "Jupyter Notebook"
+            {% endif %}
+        ];
+
+        const dataValues = [
+            {% if dashboard and dashboard.top_languages %}
+                {% for item in dashboard.top_languages %}{{ item[1] }},{% endfor %}
+            {% else %}
+                67, 47, 18, 18
+            {% endif %}
+        ];
+
+        // Vibrant Multi-Color Palette (Violet, Emerald, Amber, Pink, Cyan, Indigo, Rose)
+        const colors = [
+            '#8b5cf6', // Electric Violet
+            '#ec4899', // Hot Pink
+            '#10b981', // Neon Emerald
+            '#f59e0b', // Vibrant Amber
+            '#06b6d4', // Bright Cyan
+            '#6366f1', // Deep Indigo
+            '#f43f5e'  // Coral Rose
+        ];
+
+        // Update center metric
+        const totalSkills = dataValues.reduce((a, b) => a + b, 0);
+        document.getElementById('chart-total-count').textContent = totalSkills;
+
+        // Render Custom Colorful HTML Legend
+        const legendContainer = document.getElementById('custom-legend');
+        labels.forEach((label, i) => {
+            const percentage = totalSkills > 0 ? Math.round((dataValues[i] / totalSkills) * 100) : 0;
+            const itemColor = colors[i % colors.length];
+            const item = document.createElement('div');
+            item.className = 'flex items-center justify-between bg-violet-950/30 p-2 rounded-lg border border-violet-500/20 hover:border-violet-500/40 transition-all hover:bg-violet-900/30';
+            item.innerHTML = `
+                <div class="flex items-center gap-2 overflow-hidden">
+                    <span class="w-2.5 h-2.5 rounded-full shrink-0 shadow-[0_0_8px_${itemColor}]" style="background-color: ${itemColor}"></span>
+                    <span class="text-gray-200 font-medium truncate">${label}</span>
+                </div>
+                <span class="font-bold ml-1" style="color: ${itemColor}">${percentage}%</span>
+            `;
+            legendContainer.appendChild(item);
+        });
+
+        // Initialize Chart.js with Colorful Hover Effects
+        const ctx = document.getElementById('skillsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: dataValues,
+                    backgroundColor: colors,
+                    borderWidth: 2,
+                    borderColor: '#0b0f19',
+                    hoverBorderColor: '#ffffff',
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '74%',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(10, 14, 26, 0.95)',
+                        titleColor: '#ffffff',
+                        bodyColor: '#e9d5ff',
+                        borderColor: 'rgba(167, 139, 250, 0.3)',
+                        borderWidth: 1,
+                        padding: 10,
+                        cornerRadius: 10,
+                        displayColors: true,
+                        boxWidth: 8,
+                        boxHeight: 8,
+                        usePointStyle: true
+                    }
+                }
+            }
+        });
+
+        // Toggle Chatbox visibility & Floating Button
+        function toggleChat() {
+            const chatBox = document.getElementById('chat-box');
+            const toggleBtn = document.getElementById('chat-toggle-btn');
+
+            if (chatBox.classList.contains('hidden')) {
+                chatBox.classList.remove('hidden');
+                toggleBtn.classList.add('hidden');
+            } else {
+                chatBox.classList.add('hidden');
+                toggleBtn.classList.remove('hidden');
+            }
+        }
+
+        // Handle sending messages
+        async function sendMessage(event) {
+            event.preventDefault();
+            
+            const input = document.getElementById('chat-input');
+            const messagesContainer = document.getElementById('chat-messages');
+            const userText = input.value.trim();
+
+            if (!userText) return;
+
+            // 1. Render User Message
+            const userBubble = document.createElement('div');
+            userBubble.className = 'flex justify-end';
+            userBubble.innerHTML = `
+                <div class="bg-violet-600 text-white p-3 rounded-2xl rounded-tr-none max-w-[80%] leading-relaxed">
+                    ${userText}
+                </div>
+            `;
+            messagesContainer.appendChild(userBubble);
+            input.value = '';
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // 2. Call Flask backend endpoint
+            try {
+                const response = await fetch('/api/chat/ai', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: userText })
+                });
+                const data = await response.json();
+
+                // 3. Render AI Response
+                const botBubble = document.createElement('div');
+                botBubble.className = 'flex items-start gap-2';
+                botBubble.innerHTML = `
+                    <div class="bg-violet-600/20 p-1.5 rounded-lg border border-violet-500/30 text-violet-300 shrink-0">
+                        <i data-lucide="bot" class="w-3.5 h-3.5"></i>
+                    </div>
+                    <div class="bg-gray-900/90 text-gray-200 p-3 rounded-2xl rounded-tl-none border border-gray-800 max-w-[80%] leading-relaxed">
+                        ${data.reply}
+                    </div>
+                `;
+                messagesContainer.appendChild(botBubble);
+                lucide.createIcons(); // Refresh Lucide icons
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            } catch (error) {
+                console.error("Chat Error:", error);
+            }
+        }
+    </script>
+</body>
+</html>

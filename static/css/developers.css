@@ -1,0 +1,75 @@
+/* ==========================================================
+   NEURAL NEXUS - DEVELOPERS PAGE STYLESHEET
+   Matching EXACT login.css Light Theme
+========================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #F8FAFC;
+    color: #0F172A;
+    overflow-x: hidden;
+}
+
+/* Light Mode Ambient Blue Glow */
+.ambient-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.08) 0%, rgba(248, 250, 252, 0) 70%);
+    top: -10%;
+    right: -10%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Light Card Style matching Login Container */
+.glow-card {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.01);
+}
+
+.glow-card:hover {
+    border-color: #DBEAFE;
+    box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.08);
+}
+
+/* Interactive Chips */
+.skill-chip {
+    transition: all 0.2s ease-in-out;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.skill-chip:active {
+    transform: scale(0.95);
+}
+
+/* Scrollbar matching Light Theme */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #F8FAFC;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 4px;
+    border: 2px solid #F8FAFC;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #2563EB;
+}
