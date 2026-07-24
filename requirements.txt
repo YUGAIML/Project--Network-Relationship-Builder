@@ -1,25 +1,22 @@
-# Web Framework & Core Extensions
-Flask
-gunicorn
-mysql-connector-python
+# Web Framework & WSGI Servers (Required for Render Deployment)
 Flask>=3.0.0
-Flask-SQLAlchemy>=3.1.1
-Flask-MySQLdb>=2.0.0
-PyMySQL>=1.1.0
+gunicorn>=21.2.0
+Werkzeug>=3.0.0
 
-# AI, Vectorization & Similarity Engine
-scikit-learn>=1.3.0
-numpy>=1.24.0
-scipy>=1.10.0
-google-generativeai>=0.3.0
+# Database Connectivity
+mysql-connector-python>=8.2.0
+
+# Google GenAI (Official SDK for 'from google import genai')
+google-genai>=0.1.0
 
 # API Integrations & Web Requests
 google-api-python-client>=2.100.0
 requests>=2.31.0
 
-# Environment Management & Security
+# Environment Variable Management
 python-dotenv>=1.0.0
-Werkzeug>=3.0.0
 
-# Utility & Data Handling
+# Data Processing & AI Math Support
+numpy>=1.24.0
+scikit-learn>=1.3.0
 pandas>=2.1.0
