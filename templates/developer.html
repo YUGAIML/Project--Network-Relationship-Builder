@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Developers - Neural Nexus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/developers.css') }}?v=2.0">
+</head>
+<body class="bg-[#F8FAFC] text-[#0F172A] min-h-screen flex flex-col justify-between selection:bg-[#2563EB] selection:text-white relative overflow-x-hidden">
+
+    <!-- Light Ambient Glow -->
+    <div class="ambient-glow"></div>
+
+    <!-- NAVBAR MATCHING LOGIN LIGHT THEME -->
+    <nav class="border-b border-[#E2E8F0] bg-white/80 backdrop-blur-xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-2">
+                    <div class="bg-[#2563EB] p-2 rounded-lg text-white shadow-sm">
+                        <i data-lucide="git-branch" class="w-5 h-5"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-[#0F172A]">Neural Nexus</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="{{ url_for('home') }}" class="text-[#64748B] hover:text-[#2563EB] transition-colors text-sm font-medium">Home</a>
+                    <a href="{{ url_for('developers') }}" class="text-[#2563EB] font-semibold text-sm">Developers</a>
+                </div>
+                <div class="flex gap-3">
+                    <a href="/" class="border border-[#E2E8F0] text-[#334155] hover:bg-[#EFF6FF] hover:border-[#DBEAFE] px-5 py-2 rounded-lg text-sm font-medium transition-all">Back</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-24 flex-grow">
+
+        <div id="hero-section" class="text-center max-w-2xl mx-auto mb-10">
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#0F172A] leading-tight mb-3">
+                Find Developers <span class="text-[#2563EB]">Perfect For You</span>
+            </h1>
+            <p class="text-[#64748B] text-sm sm:text-base leading-relaxed">
+                AI recommends developers based on your skills, preferred languages, and interests.
+            </p>
+        </div>
+
+        <section id="form-container" class="max-w-3xl mx-auto">
+            <form id="recommendation-form"
+                  action="{{ url_for('recommend') }}"
+                  method="POST"
+                  class="p-6 sm:p-8 rounded-2xl space-y-6 glow-card">
+
+                <!-- SKILLS SELECTION CONTAINER -->
+                <div>
+                    <label class="block text-sm font-semibold text-[#0F172A] mb-3 flex items-center gap-2">
+                        <i data-lucide="cpu" class="w-4 h-4 text-[#2563EB]"></i> Your Skills
+                    </label>
+
+                    <input type="hidden" name="skills" id="selected-skills-input" value="">
+
+                    <!-- Active Skill Tag Box -->
+                    <div class="p-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl focus-within:border-[#2563EB] focus-within:ring-1 focus-within:ring-[#2563EB] transition-all min-h-[52px] mb-3 flex flex-wrap items-center gap-2" id="skill-box">
+                        <div id="dynamic-tags-container" class="flex flex-wrap gap-2"></div>
+                        
+                        <input 
+                            type="text" 
+                            id="custom-skill-input" 
+                            placeholder="Type custom skill and press Enter..." 
+                            class="flex-1 bg-transparent text-sm text-[#0F172A] placeholder-[#94A3B8] focus:outline-none min-w-[200px]"
+                        />
+                    </div>
+
+                    <!-- Preset Skill Chips -->
+                    <div class="mb-2">
+                        <span class="text-xs font-medium text-[#64748B] mb-2 block">Quick Select Popular Skills:</span>
+                        <div class="flex flex-wrap gap-2" id="skills-container">
+                            <button type="button" class="skill-chip border border-[#E2E8F0] bg-white hover:border-[#2563EB] hover:text-[#2563EB] text-[#334155] px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer shadow-sm" data-skill="Python">Python</button>
+                            <button type="button" class="skill-chip border border-[#E2E8F0] bg-white hover:border-[#2563EB] hover:text-[#2563EB] text-[#334155] px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer shadow-sm" data-skill="Java">Java</button>
+                            <button type="button" class="skill-chip border border-[#E2E8F0] bg-white hover:border-[#2563EB] hover:text-[#2563EB] text-[#334155] px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer shadow-sm" data-skill="JavaScript">JavaScript</button>
+                            <button type="button" class="skill-chip border border-[#E2E8F0] bg-white hover:border-[#2563EB] hover:text-[#2563EB] text-[#334155] px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer shadow-sm" data-skill="C++">C++</button>
+                            <button type="button" class="skill-chip border border-[#E2E8F0] bg-white hover:border-[#2563EB] hover:text-[#2563EB] text-[#334155] px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer shadow-sm" data-skill="Machine Learning">Machine Learning</button>
+                            <button type="button" class="skill-chip border border-[#E2E8F0] bg-white hover:border-[#2563EB] hover:text-[#2563EB] text-[#334155] px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer shadow-sm" data-skill="React">React</button>
+                            <button type="button" class="skill-chip border border-[#E2E8F0] bg-white hover:border-[#2563EB] hover:text-[#2563EB] text-[#334155] px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer shadow-sm" data-skill="Flask">Flask</button>
+                            <button type="button" class="skill-chip border border-[#E2E8F0] bg-white hover:border-[#2563EB] hover:text-[#2563EB] text-[#334155] px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer shadow-sm" data-skill="FastAPI">FastAPI</button>
+                            <button type="button" class="skill-chip border border-[#E2E8F0] bg-white hover:border-[#2563EB] hover:text-[#2563EB] text-[#334155] px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer shadow-sm" data-skill="Node.js">Node.js</button>
+                        </div>
+                    </div>
+                    <p class="text-xs text-[#94A3B8]" id="skills-hint">Select at least one skill</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-[#0F172A] mb-2 flex items-center gap-2">
+                            <i data-lucide="sparkles" class="w-4 h-4 text-[#2563EB]"></i> Interests
+                        </label>
+                        <select id="interests" name="interests" class="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-sm text-[#0F172A] focus:outline-none focus:border-[#2563EB] transition-colors">
+                            <option value="">Select Domain...</option>
+                            <option value="AI">AI</option>
+                            <option value="Data Science">Data Science</option>
+                            <option value="Backend">Backend</option>
+                            <option value="Frontend">Frontend</option>
+                            <option value="Cyber Security">Cyber Security</option>
+                            <option value="Cloud">Cloud</option>
+                            <option value="Android">Android</option>
+                            <option value="Open Source">Open Source</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-[#0F172A] mb-2 flex items-center gap-2">
+                            <i data-lucide="code-2" class="w-4 h-4 text-[#2563EB]"></i> Preferred Language
+                        </label>
+                        <select id="preferred-language" name="preferred_language" class="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-sm text-[#0F172A] focus:outline-none focus:border-[#2563EB] transition-colors">
+                            <option value="">Select Language...</option>
+                            <option value="Python">Python</option>
+                            <option value="Java">Java</option>
+                            <option value="C++">C++</option>
+                            <option value="JavaScript">JavaScript</option>
+                            <option value="Go">Go</option>
+                            <option value="Rust">Rust</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-[#0F172A] mb-3 flex items-center gap-2">
+                        <i data-lucide="gauge" class="w-4 h-4 text-[#2563EB]"></i> Experience Level
+                    </label>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <label class="flex items-center gap-2 text-sm text-[#334155] cursor-pointer hover:text-[#0F172A] transition-colors">
+                            <input type="radio" name="experience" value="Beginner" class="accent-[#2563EB] focus:ring-0">
+                            <span>Beginner</span>
+                        </label>
+                        <label class="flex items-center gap-2 text-sm text-[#334155] cursor-pointer hover:text-[#0F172A] transition-colors">
+                            <input type="radio" name="experience" value="Intermediate" class="accent-[#2563EB] focus:ring-0" checked>
+                            <span>Intermediate</span>
+                        </label>
+                        <label class="flex items-center gap-2 text-sm text-[#334155] cursor-pointer hover:text-[#0F172A] transition-colors">
+                            <input type="radio" name="experience" value="Advanced" class="accent-[#2563EB] focus:ring-0">
+                            <span>Advanced</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" id="submit-btn" class="w-full bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-bold py-3.5 px-6 rounded-xl text-sm transition-all shadow-md tracking-wide uppercase flex items-center justify-center gap-2 cursor-pointer">
+                        <i data-lucide="wand-2" class="w-4 h-4"></i> Generate AI Recommendations
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Loading Screen -->
+        <section id="loading-screen" class="hidden flex-col items-center justify-center py-20 max-w-md mx-auto space-y-6">
+            <div class="relative w-20 h-20">
+                <div class="absolute inset-0 rounded-full border-4 border-[#2563EB]/20 border-t-[#2563EB] animate-spin"></div>
+                <div class="absolute inset-2 rounded-full border-4 border-[#2563EB]/10 border-b-[#1D4ED8] animate-spin" style="animation-direction: reverse; animation-duration: 1.5s;"></div>
+            </div>
+            <div class="text-center space-y-2">
+                <h3 class="text-lg font-bold text-[#0F172A] tracking-wide" id="loader-status">Finding developers...</h3>
+                <p class="text-xs text-[#2563EB] animate-pulse" id="loader-substatus">Scanning GitHub profiles...</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-[#E2E8F0] bg-white py-8 text-center text-xs text-[#64748B] relative z-10">
+        <p>&copy; 2026 Neural Nexus AI. All rights reserved.</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        const selectedSkillsInput = document.getElementById('selected-skills-input');
+        const skillChips = document.querySelectorAll('.skill-chip');
+        const skillsHint = document.getElementById('skills-hint');
+        const customSkillInput = document.getElementById('custom-skill-input');
+        const dynamicTagsContainer = document.getElementById('dynamic-tags-container');
+
+        let selectedSkills = [];
+
+        function renderTags() {
+            dynamicTagsContainer.innerHTML = '';
+            
+            selectedSkills.forEach(skill => {
+                const tag = document.createElement('span');
+                tag.className = 'inline-flex items-center gap-1.5 px-3 py-1 bg-[#EFF6FF] border border-[#DBEAFE] text-[#2563EB] text-xs font-semibold rounded-full';
+                
+                const label = document.createElement('span');
+                label.textContent = skill;
+                
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'hover:text-[#1D4ED8] focus:outline-none flex items-center justify-center';
+                btn.innerHTML = `<i data-lucide="x" class="w-3 h-3"></i>`;
+                
+                btn.addEventListener('click', () => removeSkill(skill));
+
+                tag.appendChild(label);
+                tag.appendChild(btn);
+                dynamicTagsContainer.appendChild(tag);
+            });
+
+            lucide.createIcons();
+            
+            selectedSkillsInput.value = selectedSkills.join(',');
+
+            skillsHint.classList.remove('text-red-500');
+            skillsHint.textContent = selectedSkills.length
+                ? `${selectedSkills.length} skill(s) selected`
+                : 'Select at least one skill';
+
+            updatePresetChipStyles();
+        }
+
+        function addSkill(skillName) {
+            const cleanSkill = skillName.trim();
+            if (!cleanSkill) return;
+
+            const exists = selectedSkills.some(s => s.toLowerCase() === cleanSkill.toLowerCase());
+            if (!exists) {
+                selectedSkills.push(cleanSkill);
+                renderTags();
+            }
+        }
+
+        function removeSkill(skillName) {
+            selectedSkills = selectedSkills.filter(s => s.toLowerCase() !== skillName.toLowerCase());
+            renderTags();
+        }
+
+        function updatePresetChipStyles() {
+            skillChips.forEach(chip => {
+                const skill = chip.getAttribute('data-skill');
+                const isSelected = selectedSkills.some(s => s.toLowerCase() === skill.toLowerCase());
+                
+                if (isSelected) {
+                    chip.classList.remove('border-[#E2E8F0]', 'bg-white', 'text-[#334155]');
+                    chip.classList.add('border-[#2563EB]', 'bg-[#EFF6FF]', 'text-[#2563EB]');
+                } else {
+                    chip.classList.remove('border-[#2563EB]', 'bg-[#EFF6FF]', 'text-[#2563EB]');
+                    chip.classList.add('border-[#E2E8F0]', 'bg-white', 'text-[#334155]');
+                }
+            });
+        }
+
+        skillChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                const skill = chip.getAttribute('data-skill');
+                const exists = selectedSkills.some(s => s.toLowerCase() === skill.toLowerCase());
+                if (exists) {
+                    removeSkill(skill);
+                } else {
+                    addSkill(skill);
+                }
+            });
+        });
+
+        customSkillInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ',') {
+                e.preventDefault();
+                addSkill(customSkillInput.value);
+                customSkillInput.value = '';
+            } else if (e.key === 'Backspace' && customSkillInput.value === '' && selectedSkills.length > 0) {
+                selectedSkills.pop();
+                renderTags();
+            }
+        });
+
+        const formEl = document.getElementById('recommendation-form');
+        const formContainer = document.getElementById('form-container');
+        const heroSection = document.getElementById('hero-section');
+        const loadingScreen = document.getElementById('loading-screen');
+        const loaderStatus = document.getElementById('loader-status');
+        const loaderSubstatus = document.getElementById('loader-substatus');
+
+        const steps = [
+            { main: "Finding developers...", sub: "Scanning GitHub database profiles..." },
+            { main: "Analyzing repositories...", sub: "Comparing skill overlap..." },
+            { main: "Ranking matches...", sub: "Calculating match scores..." }
+        ];
+
+        formEl.addEventListener('submit', (e) => {
+            if (customSkillInput.value.trim() !== '') {
+                addSkill(customSkillInput.value);
+                customSkillInput.value = '';
+            }
+
+            if (selectedSkills.length === 0) {
+                e.preventDefault();
+                skillsHint.classList.add('text-red-500');
+                skillsHint.textContent = 'Please select or type at least one skill to continue';
+                return;
+            }
+
+            e.preventDefault();
+            formContainer.classList.add('hidden');
+            heroSection.classList.add('hidden');
+            loadingScreen.classList.remove('hidden');
+            loadingScreen.classList.add('flex');
+
+            let currentStep = 0;
+            const interval = setInterval(() => {
+                if (currentStep < steps.length) {
+                    loaderStatus.textContent = steps[currentStep].main;
+                    loaderSubstatus.textContent = steps[currentStep].sub;
+                    currentStep++;
+                } else {
+                    clearInterval(interval);
+                    formEl.submit();
+                }
+            }, 700);
+        });
+    </script>
+</body>
+</html>
