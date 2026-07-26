@@ -1,4 +1,3 @@
-# Project--Network-Relationship-Builder
 <div align="center">
 
 # 🌐 Neural Nexus
